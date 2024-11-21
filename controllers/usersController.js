@@ -1,3 +1,4 @@
+const usersStorage = require("../storages/usersStorage")
 const userStorage = require("../storages/usersStorage")
 const { body, validationResult } = require("express-validator")
 
@@ -33,7 +34,7 @@ exports.usersCreatePost = [
         if (!errors.isEmpty()) {
             return res.status(400).render("createUser", {
                 title: "Create user",
-                errors: errors.array()
+                errors: errors.array(),
             })
         }
         const { firstName, lastName } = req.body
@@ -41,3 +42,33 @@ exports.usersCreatePost = [
         res.redirect("/")    
     }
 ]
+
+exports.usersUpdateGet = (req, res) => {
+    const user = usersStorage.getUser(req.param.id)
+    res.render("updateUser", {
+        title: "Update user",
+        user: user,
+    })
+}
+
+exports.usersUpdatePost = [
+    validateUser, 
+    (req, res) => {
+        const user = usersStorage.getUser(req.params.id)
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.stats(400).render("updateUser", {
+                title: "Create user",
+                errors: errors.array(),
+            })
+        }
+        const { firstName, lastName } = req.body
+        userStorage.updateUser({ firstName, lastName })
+        res.redirect("/")  
+    }
+]
+
+exports.usersDeletePost = (req, res) => {
+    usersStorage.deleteUser(req.params.id)
+    res.redirect("/")
+}
