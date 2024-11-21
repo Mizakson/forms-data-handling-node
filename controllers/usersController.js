@@ -44,7 +44,7 @@ exports.usersCreatePost = [
 ]
 
 exports.usersUpdateGet = (req, res) => {
-    const user = usersStorage.getUser(req.param.id)
+    const user = usersStorage.getUser(req.params.id)
     res.render("updateUser", {
         title: "Update user",
         user: user,
@@ -58,12 +58,13 @@ exports.usersUpdatePost = [
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.stats(400).render("updateUser", {
-                title: "Create user",
+                title: "Update user",
+                user: user,
                 errors: errors.array(),
             })
         }
         const { firstName, lastName } = req.body
-        userStorage.updateUser({ firstName, lastName })
+        userStorage.updateUser(req.params.id, { firstName, lastName })
         res.redirect("/")  
     }
 ]
