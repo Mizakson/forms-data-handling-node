@@ -5,6 +5,8 @@ const { body, validationResult } = require("express-validator");
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters.";
 
+const emailErr = "must be in valid address format. (ex. username@site.com)";
+
 exports.usersListGet = (req, res) => {
   res.render("index", {
     title: "User list",
@@ -19,8 +21,8 @@ exports.usersCreateGet = (req, res) => {
 };
 
 exports.usersCreatePost = (req, res) => {
-  const { firstName, lastName } = req.body;
-  usersStorage.addUser({ firstName, lastName });
+  const { firstName, lastName, email } = req.body;
+  usersStorage.addUser({ firstName, lastName, email });
   res.redirect("/");
 };
 
@@ -31,6 +33,8 @@ const validateUser = [
   body("lastName").trim()
     .isAlpha().withMessage(`Last name ${alphaErr}`)
     .isLength({ min: 1, max: 10 }).withMessage(`Last name ${lengthErr}`),
+  body("email").trim()
+    .isEmail().withMessage(`Email ${emailErr}`)
 ];
 
 // We can pass an entire array of middleware validations to our controller.
@@ -44,8 +48,8 @@ exports.usersCreatePost = [
         errors: errors.array(),
       });
     }
-    const { firstName, lastName } = req.body;
-    usersStorage.addUser({ firstName, lastName });
+    const { firstName, lastName, email } = req.body;
+    usersStorage.addUser({ firstName, lastName, email });
     res.redirect("/");
   }
 ];
@@ -70,8 +74,8 @@ exports.usersUpdateGet = (req, res) => {
           errors: errors.array(),
         });
       }
-      const { firstName, lastName } = req.body;
-      usersStorage.updateUser(req.params.id, { firstName, lastName });
+      const { firstName, lastName, email } = req.body;
+      usersStorage.updateUser(req.params.id, { firstName, lastName, email });
       res.redirect("/");
     }
   ];
