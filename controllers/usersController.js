@@ -6,6 +6,7 @@ const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters.";
 const emailErr = "must be in valid address format. (ex. username@site.com)";
 const ageErr = "must be between 18 and 120";
+const bioErr = "must be at most 200 characters"
 
 exports.usersListGet = (req, res) => {
   res.render("index", {
@@ -37,7 +38,10 @@ const validateUser = [
     .isEmail().withMessage(`Email ${emailErr}`),
   body("age").trim()
     .optional({checkFalsy: true})
-    .isInt({ min: 18, max: 120}).withMessage(`Age ${ageErr}`)
+    .isInt({ min: 18, max: 120}).withMessage(`Age ${ageErr}`),
+  body("bio").trim()
+    .optional({checkFalsy: true})
+    .isLength({max: 120}).withMessage(`Bio ${bioErr}`)
 ];
 
 // We can pass an entire array of middleware validations to our controller.
@@ -51,8 +55,8 @@ exports.usersCreatePost = [
         errors: errors.array(),
       });
     }
-    const { firstName, lastName, email, age } = req.body;
-    usersStorage.addUser({ firstName, lastName, email, age });
+    const { firstName, lastName, email, age, bio } = req.body;
+    usersStorage.addUser({ firstName, lastName, email, age, bio });
     res.redirect("/");
   }
 ];
@@ -77,8 +81,8 @@ exports.usersUpdateGet = (req, res) => {
           errors: errors.array(),
         });
       }
-      const { firstName, lastName, email, age } = req.body;
-      usersStorage.updateUser(req.params.id, { firstName, lastName, email, age });
+      const { firstName, lastName, email, age, bio } = req.body;
+      usersStorage.updateUser(req.params.id, { firstName, lastName, email, age, bio });
       res.redirect("/");
     }
   ];
