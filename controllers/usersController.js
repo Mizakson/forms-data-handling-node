@@ -69,7 +69,7 @@ exports.usersUpdateGet = (req, res) => {
     });
   };
   
-  exports.usersUpdatePost = [
+exports.usersUpdatePost = [
     validateUser,
     (req, res) => {
       const user = usersStorage.getUser(req.params.id);
@@ -85,7 +85,7 @@ exports.usersUpdateGet = (req, res) => {
       usersStorage.updateUser(req.params.id, { firstName, lastName, email, age, bio });
       res.redirect("/");
     }
-  ];
+];
 
   // Tell the server to delete a matching user, if any. Otherwise, respond with an error.
 exports.usersDeletePost = (req, res) => {
@@ -93,4 +93,8 @@ exports.usersDeletePost = (req, res) => {
     res.redirect("/");
   };
   
-  
+exports.usersSearchFormGet = (req, res) => {
+  res.render("searchForm", {
+    title: "Search form",
+  });
+}
