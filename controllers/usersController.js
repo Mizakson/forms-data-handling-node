@@ -44,7 +44,6 @@ const validateUser = [
     .isLength({max: 120}).withMessage(`Bio ${bioErr}`)
 ];
 
-// We can pass an entire array of middleware validations to our controller.
 exports.usersCreatePost = [
   validateUser,
   (req, res) => {
@@ -69,7 +68,7 @@ exports.usersUpdateGet = (req, res) => {
     });
   };
   
-exports.usersUpdatePost = [
+  exports.usersUpdatePost = [
     validateUser,
     (req, res) => {
       const user = usersStorage.getUser(req.params.id);
@@ -85,9 +84,9 @@ exports.usersUpdatePost = [
       usersStorage.updateUser(req.params.id, { firstName, lastName, email, age, bio });
       res.redirect("/");
     }
-];
+  ];
 
-  // Tell the server to delete a matching user, if any. Otherwise, respond with an error.
+
 exports.usersDeletePost = (req, res) => {
     usersStorage.deleteUser(req.params.id);
     res.redirect("/");
@@ -97,4 +96,4 @@ exports.usersSearchFormGet = (req, res) => {
   res.render("searchForm", {
     title: "Search form",
   });
-}
+};
