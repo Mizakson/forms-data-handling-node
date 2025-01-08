@@ -100,12 +100,17 @@ exports.usersSearchGet = (req, res) => {
     const userObj = usersStorage[users]
     for (const prop in userObj) {
       const matchedUser = userObj[prop]["id"]
-      if (userObj[prop]["firstName"] === firstName && userObj[prop]["lastName"] === lastName)
+      if (userObj[prop]["firstName"] === firstName && userObj[prop]["lastName"] === lastName) {
         res.render("search", {
           title: "Search result",
           user: usersStorage.getUser(matchedUser),
         })
-      // render error page
+      }
+      else {
+        res.render("searchError", {
+          title: "Search Error",
+        })
+      }
     }
   }
   
