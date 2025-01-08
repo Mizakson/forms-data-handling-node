@@ -91,9 +91,24 @@ exports.usersDeletePost = (req, res) => {
     usersStorage.deleteUser(req.params.id);
     res.redirect("/");
   };
+
+exports.usersSearchGet = (req, res) => {
+  const firstName = req.query.firstName
+  const lastName = req.query.lastName
+
+  for (const users in usersStorage) {
+    const userObj = usersStorage[users]
+    for (const prop in userObj) {
+      const matchedUser = userObj[prop]["id"]
+      if (userObj[prop]["firstName"] === firstName && userObj[prop]["lastName"] === lastName)
+        res.render("search", {
+          title: "Search result",
+          user: usersStorage.getUser(matchedUser),
+        })
+      // render error page
+    }
+  }
   
-exports.usersSearchFormGet = (req, res) => {
-  res.render("searchForm", {
-    title: "Search form",
-  });
-};
+
+
+}

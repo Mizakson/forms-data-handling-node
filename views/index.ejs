@@ -21,9 +21,18 @@
   <button>
     <a href="/create">Create a user</a>
   </button>
-  <button>
-    <a href="/search">Search for a user</a>
-  </button>
+
+  <h2>Search</h2>
+  <form action="/search" method="GET">
+    
+    <label for="name">First Name: </label>
+    <input type="text" name="firstName" id="firstName" required>
+    
+    <label for="lastName">Last Name: </label>
+    <input type="text" name="lastName" id="lastName" required>
+
+    <button type="submit">Search</button>
+  </form>
   
 </body>
 </html>
